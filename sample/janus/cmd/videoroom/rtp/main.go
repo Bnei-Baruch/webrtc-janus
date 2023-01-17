@@ -103,7 +103,7 @@ func main() {
 	case "1080p":
 		PipeLine = "decklinkvideosrc mode=1080i50 ! queue ! deinterlace ! videoconvert ! video/x-raw,format=NV12 ! msdkh264enc rate-control=cbr gop-size=50 bitrate=" + bitRate + " ! video/x-h264,stream-format=byte-stream ! "
 	case "720p":
-		PipeLine = "decklinkvideosrc mode=1080i50 ! queue ! deinterlace ! msdkvpp hardware=true scaling-mode=1 ! video/x-raw,width=640,height=360,format=NV12 ! msdkh264enc rate-control=cbr gop-size=50 bitrate=" + bitRate + " ! video/x-h264,stream-format=byte-stream ! "
+		PipeLine = "decklinkvideosrc mode=1080i50 ! queue ! deinterlace ! msdkvpp hardware=true scaling-mode=1 ! video/x-raw,width=1280,height=720,format=NV12 ! msdkh264enc rate-control=cbr gop-size=50 bitrate=" + bitRate + " ! video/x-h264,stream-format=byte-stream ! "
 	case "360p":
 		PipeLine = "decklinkvideosrc mode=1080i50 ! queue ! deinterlace ! msdkvpp hardware=true scaling-mode=1 ! video/x-raw,width=640,height=360,format=NV12 ! msdkh264enc rate-control=cbr gop-size=50 bitrate=" + bitRate + " ! video/x-h264,stream-format=byte-stream ! "
 	default:
@@ -171,8 +171,13 @@ func main() {
 		"request": "join",
 		"ptype":   "publisher",
 		"room":    roomId,
-		"display": "test",
-		"id":      1,
+		"display": map[string]interface{}{
+			"session": session.ID,
+			"handle":  handle.ID,
+			"role":    "encoder",
+			"display": "encoder",
+		},
+		"id": 1,
 	}, nil)
 	if err != nil {
 		panic(err)
