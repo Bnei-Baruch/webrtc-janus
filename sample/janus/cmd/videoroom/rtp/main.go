@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
 	"example.com/webrtc-janus/pkg/gst"
@@ -167,17 +168,15 @@ func main() {
 			}
 	*/
 
+	sid := strconv.FormatUint(session.ID, 10)
+	hid := strconv.FormatUint(handle.ID, 10)
+
 	joinmsg, err := handle.Message(map[string]interface{}{
 		"request": "join",
 		"ptype":   "publisher",
 		"room":    roomId,
-		"display": map[string]interface{}{
-			"session": session.ID,
-			"handle":  handle.ID,
-			"role":    "encoder",
-			"display": "encoder",
-		},
-		"id": 1,
+		"display": "{\"session\": " + sid + ", \"handle\": " + hid + ", \"role\": \"encoder\", \"display\": \"encoder\"}",
+		"id":      1,
 	}, nil)
 	if err != nil {
 		panic(err)
